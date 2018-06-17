@@ -9,8 +9,10 @@ support, process images, etc.
 For larger / complex sites, they let you modularize your site customizations
 into site-specific plugins.
 
-Gatsby has a large and growing set of plugins. To search/browse official and 
+Gatsby has a large and growing set of plugins. To search/browse official and
 community plugins and their documentation, visit the [Plugin Library](/packages/).
+
+For information on building your own plugin, see the [Plugin Authoring page](/docs/plugin-authoring/).
 
 ## How to use Gatsby plugins?
 
@@ -30,11 +32,40 @@ to the plugins array like:
 ```javascript
 module.exports = {
   plugins: [`gatsby-transformer-json`],
+}
+```
+
+Plugins can take options. Examples:
+
+```javascript
+module.exports = {
+  plugins: [
+    // Shortcut for adding plugins without options.
+    "gatsby-plugin-react-helmet",
+    {
+      // Standard plugin with options example
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/src/data/`,
+        name: "data",
+      },
+    },
+    {
+      resolve: "gatsby-plugin-offline",
+      // Blank options, equivalent to string-only plugin
+      options: {
+        plugins: [],
+      },
+    },
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        // plugins inside plugins
+        plugins: [`gatsby-remark-smartypants`],
+      },
+    },
+  ],
 };
 ```
 
-Plugins can take options. Note that plugin options will be stringified by Gatsby, so they cannot be functions.
-
-## Creating your own plugins
-
-If you’d like to create a custom Gatsby plugin, check out the [plugin authoring guide](/docs/plugin-authoring/).
+Note that plugin options will be stringified by Gatsby, so they cannot be functions.

@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { navigateTo } from "gatsby-link"
+import { push } from "gatsby"
 import { rhythm } from "../utils/typography"
 
 import presets, { colors } from "../utils/presets"
@@ -238,7 +238,6 @@ class SearchForm extends Component {
     super()
     this.state = { enabled: true, focussed: false }
     this.autocompleteSelected = this.autocompleteSelected.bind(this)
-    this.focusSearchInput = this.focusSearchInput.bind(this)
   }
 
   /**
@@ -254,17 +253,7 @@ class SearchForm extends Component {
     const a = document.createElement(`a`)
     a.href = e._args[0].url
     this.searchInput.blur()
-    navigateTo(`${a.pathname}${a.hash}`)
-  }
-
-  focusSearchInput(e) {
-    if (e.key !== `s`) return
-
-    // ignore this shortcut whenever an <input> has focus
-    if (document.activeElement instanceof window.HTMLInputElement) return // eslint-disable-line no-undef
-
-    e.preventDefault()
-    this.searchInput.focus()
+    push(`${a.pathname}${a.hash}`)
   }
 
   componentDidMount() {
@@ -276,9 +265,6 @@ class SearchForm extends Component {
       this.setState({ enabled: false })
       return
     }
-
-    // eslint-disable-next-line no-undef
-    window.addEventListener(`keydown`, this.focusSearchInput)
 
     // eslint-disable-next-line no-undef
     window.addEventListener(
@@ -293,12 +279,13 @@ class SearchForm extends Component {
       indexName: `gatsbyjs`,
       inputSelector: `#doc-search`,
       debug: false,
+      autocompleteOptions: {
+        openOnFocus: true,
+        autoselect: true,
+        hint: false,
+        keyboardShortcuts: [`s`],
+      },
     })
-  }
-
-  componentWillUnmount() {
-    // eslint-disable-next-line no-undef
-    window.removeEventListener(`keydown`, this.focusSearchInput)
   }
 
   render() {
@@ -345,7 +332,7 @@ class SearchForm extends Component {
               [presets.Desktop]: {
                 backgroundColor: !isHomepage && `#fff`,
                 color: colors.gatsby,
-                width: !isHomepage && rhythm(5),
+                width: !isHomepage && rhythm(3.5),
                 ":focus": {
                   backgroundColor: colors.ui.light,
                   color: colors.gatsby,
@@ -355,12 +342,12 @@ class SearchForm extends Component {
               [presets.Hd]: {
                 backgroundColor: isHomepage && colors.lilac,
                 color: isHomepage && colors.ui.light,
-                width: isHomepage && rhythm(5),
+                width: isHomepage && rhythm(3.5),
               },
             }}
             type="search"
-            placeholder="Search docs"
-            aria-label="Search docs"
+            placeholder="Search"
+            aria-label="Search"
             title="Hit 's' to search docs"
             onFocus={() => this.setState({ focussed: true })}
             onBlur={() => this.setState({ focussed: false })}

@@ -10,11 +10,11 @@ We plan, write, and maintain these Guide articles on GitHub.
 
 ## Table of Contents
 
-* [What are Guide articles?](#what-are-guide-articles)
-* [What can I write an article about?](#what-can-i-write-an-article-about)
-* [How to contribute](#how-to-contribute)
-* [Running the Guide locally on your own computer](#running-the-guide-locally-on-your-own-computer)
-* [Article style guide](#article-style-guide)
+- [What are Guide articles?](#what-are-guide-articles)
+- [What can I write an article about?](#what-can-i-write-an-article-about)
+- [How to contribute](#how-to-contribute)
+- [Running the Guide locally on your own computer](#running-the-guide-locally-on-your-own-computer)
+- [Article style guide](#article-style-guide)
 
 # What are Guide articles?
 
@@ -47,33 +47,33 @@ Before you begin writing, make sure to read the article style guide below.
 You can create a PR with your draft article (or edits on an existing article) in
 two ways:
 
-1. The easiest method is to use the GitHub interface. Read
-   [these instructions](https://help.github.com/articles/editing-files-in-another-user-s-repository/)
-   on how to create a draft article or propose edits in the GitHub interface.
-2. Go into the
-   ["docs" folder](https://github.com/gatsbyjs/gatsby/tree/master/docs/docs) and
-   find the article stub you'd like to write or edit. All stubs will be in an
-   index.md file.
-3. Click the "Edit this file" pencil icon and make your changes to the file in
-   GitHub-flavored Markdown.
-4. Scroll to the bottom of the screen and add a commit message explaining your
-   changes. Then select the radio button option for "Create a new branch for
-   this commit and start a pull request" and click "Propose file changes"
-5. On the next screen, you can add any other details about your PR, then click
-   "Create pull request".
+1.  The easiest method is to use the GitHub interface. Read
+    [these instructions](https://help.github.com/articles/editing-files-in-another-user-s-repository/)
+    on how to create a draft article or propose edits in the GitHub interface.
+2.  Go into the
+    ["docs" folder](https://github.com/gatsbyjs/gatsby/tree/master/docs/docs) and
+    find the article stub you'd like to write or edit. All stubs will be in an
+    index.md file.
+3.  Click the "Edit this file" pencil icon and make your changes to the file in
+    GitHub-flavored Markdown.
+4.  Scroll to the bottom of the screen and add a commit message explaining your
+    changes. Then select the radio button option for "Create a new branch for
+    this commit and start a pull request" and click "Propose file changes"
+5.  On the next screen, you can add any other details about your PR, then click
+    "Create pull request".
 
 If you prefer to write locally before submitting a PR, then follow these steps:
 
-1. Fork this repository
-2. Copy your fork to your local machine.
-3. Add a remote upstream so git knows where the official Gatsby
-   repository is located by running the command `git remote add upstream`
-   _incomplete code here_
-4. Create a new branch for your work with the command `git checkout -b NEW-BRANCH-NAME`. Try to name your branch in a way that describes your
-   article topic, like `fix/ArticleHTMLElements`
-5. Write your article, commit your changes locally, and push your new branch to
-   GitHub with the command `git push origin NEW-BRANCH-NAME`
-6. Go to your repository on GitHub and open a PR
+1.  Fork this repository
+2.  Copy your fork to your local machine.
+3.  Add a remote upstream so git knows where the official Gatsby
+    repository is located by running the command `git remote add upstream`
+    _incomplete code here_
+4.  Create a new branch for your work with the command `git checkout -b NEW-BRANCH-NAME`. Try to name your branch in a way that describes your
+    article topic, like `fix/ArticleHTMLElements`
+5.  Write your article, commit your changes locally, and push your new branch to
+    GitHub with the command `git push origin NEW-BRANCH-NAME`
+6.  Go to your repository on GitHub and open a PR
 
 Make sure to maintain your local fork going forward so it stays up-to-date with
 the Gatsby guides repository. The next time you want to contribute, checkout
@@ -83,13 +83,13 @@ repository.
 
 # Running the Guide locally on your own computer
 
-Finally, if you want to run a version of the guides repository locally, follow
+Finally, if you want to run a version of the Guides repository locally, follow
 these steps:
 
-1. Ensure you have the yarn package manager installed `npm install -g yarn`
-2. Install the Gatsby cli `yarn add --global gatsby-cli`
-3. Follow the steps above to fork and clone the Gatsby repo.
-4. Enter the `www` directory where gatsbyjs.org is and install its dependencies `yarn install` then run `gatsby develop`.
+1.  Ensure you have the yarn package manager installed `npm install -g yarn`
+2.  Install the Gatsby cli `yarn add --global gatsby-cli`
+3.  Follow the steps above to fork and clone the Gatsby repo.
+4.  Enter the `www` directory where gatsbyjs.org is and install its dependencies `yarn install` then run `gatsby develop`.
 
 ## Article style guide
 
@@ -98,13 +98,13 @@ contributing.
 
 # Table of Contents
 
-* [Article title](#article-title)
-* [Modularity](#modularity)
-* [General writing tips](#general-writing-tips)
-* [Formatting example code](#formatting-example-code)
-* [Adding images to articles](#adding-images-to-articles)
-* [Proper nouns](#proper-nouns)
-* [How to write clearly](#how-to-write-clearly)
+- [Article title](#article-title)
+- [Modularity](#modularity)
+- [General writing tips](#general-writing-tips)
+- [Formatting example code](#formatting-example-code)
+- [Adding images to articles](#adding-images-to-articles)
+- [Proper nouns](#proper-nouns)
+- [How to write clearly](#how-to-write-clearly)
 
 # Article title
 
@@ -114,18 +114,18 @@ the main theme of the article.
 
 Here are some title examples:
 
-* Creating and Modifying Pages
-* 404 Pages
-* What is GraphQL?
+- Creating and Modifying Pages
+- 404 Pages
+- What is GraphQL?
 
 The folder name is used in the URL, so only use dashes -, numbers 0-9, and
 lowercase letters a-z for it.
 
 Here are some folder name examples:
 
-* creating-and-modifying-pages
-* 404-pages
-* what-is-graphql
+- creating-and-modifying-pages
+- 404-pages
+- what-is-graphql
 
 Note: Just to clarify, you can include special characters in the article title
 but _not_ in the folder name (e.g. Title: What is GraphQL? and Folder Name:
@@ -161,8 +161,8 @@ several short paragraphs instead of a huge block of text.
 Use active voice instead of passive voice. Generally, it's a more concise and
 more straightforward way to communicate a subject. For example:
 
-* (Passive) The for loop in JavaScript is used by programmers to...
-* (Active) Programmers use the for loop in JavaScript to...
+- (Passive) The for loop in JavaScript is used by programmers to...
+- (Active) Programmers use the for loop in JavaScript to...
 
 If you want to abbreviate a term in your article, write it out fully first, then
 put the abbreviation in parentheses. For example, "In computer science, an
@@ -171,6 +171,7 @@ abstract syntax tree (AST) is ..."
 Text should use the second person ("you") to help to give it a conversational
 tone. This way, the text and instructions seem to speak directly to the person
 reading it. Try to avoid using the first person ("I", "we", "let's", and "us").
+Using second person is also more accurate than saying "we," because typically only one person is reading the tutorial or guide at a time and the person who wrote the tutorial is not actually going through it with them, so "we" would be inaccurate. Finally, some technical documentation uses third person pronouns and nouns like "they" and "the user," which add more distance and feel colder than the conversational and warm "you" and "your."
 
 If there are other Guide resources you think readers would benefit from, add
 them at the bottom in an "Other Resources" section.
@@ -192,6 +193,12 @@ item in a list of three or more items, before ‘and’ or ‘or’ e.g. an Ital
 painter, sculptor, and architect). It makes things easier, clearer, and prettier
 to read.
 
+Avoid using words like "easier" or "simple," because if users have a hard time completing the task that is supposedly "easy," they will question their abilities. Consider using more specific descriptors; for example, when you say the phrase "deployment is easy," what do you really mean? Is it easy because it takes fewer steps than another option? If so, just use the most specific descriptor possible, which in that case would be "this deployment method involves fewer steps than other options."
+
+Hyperlinks should contain the clearest words to indicate where the link will lead you. So instead of linking to the word [here](https://www.gatsbyjs.org/) link to [Gatsby's docs](https://www.gatsbyjs.org/).
+
+When a paragraph or sentence offers an optional path, the beginning of the first sentence should indicate optionality. For example, "if you'd like to learn more about xyz, see our reference guide" is clearer than "Go to the reference guide if you'd like to learn more about xyz." This method allows people who would _not_ like to learn more about xyz to stop reading the sentence as early as possible. This method also allows people who _would_ like to learn more about xyz to recognize the opportunity to learn quicker instead of skipping over the paragraph.
+
 # Formatting example code
 
 Readers will likely use Guide articles as a quick reference to look up syntax.
@@ -200,12 +207,12 @@ its syntax.
 
 Here are specific formatting guidelines for any code:
 
-* JavaScript statements end with a semicolon
-* Use double quotes where applicable
-* Show generally-accepted best practices, particularly for accessibility
-* Comments made should have a space between the comment characters and the
+- JavaScript statements end with a semicolon
+- Use double quotes where applicable
+- Show generally-accepted best practices, particularly for accessibility
+- Comments made should have a space between the comment characters and the
   comment themselves
-* GitHub-flavored markdown supports syntax highlighting in code blocks for many
+- GitHub-flavored markdown supports syntax highlighting in code blocks for many
   programming languages. To use it, indicate the language after the opening three back ticks \`\`\`
 
   ```html
@@ -216,7 +223,7 @@ Here are specific formatting guidelines for any code:
 
   ```javascript
   function logTheThings(stuff) {
-    console.log(stuff);
+    console.log(stuff)
   }
   ```
 
@@ -243,8 +250,8 @@ Then the images should show up when you click the "preview table" tab.
 Proper nouns should use correct capitalization when possible. Below is a list of
 words as they should appear in Guide articles.
 
-* JavaScript (capital letters in "J" and "S" and no abbreviations)
-* Node.js
+- JavaScript (capital letters in "J" and "S" and no abbreviations)
+- Node.js
 
 Front-end development (adjective form with a dash) is when you’re working on the
 front end (noun form with no dash). The same goes with the back end, full stack,
@@ -261,9 +268,9 @@ Use the [Hemingway App](http://www.hemingwayapp.com/). There’s nothing magical
 about this tool, but it will automatically detect widely agreed-upon
 style issues:
 
-* passive voice
-* unnecessary adverbs
-* words that have more common equivalents
+- passive voice
+- unnecessary adverbs
+- words that have more common equivalents
 
 The Hemingway App will assign a “grade level” for your writing. You should aim
 for a grade level of 6. Another tool available is the De-Jargonizer, originally

@@ -16,9 +16,12 @@ let _useACF = true
 let _hostingWPCOM
 let _auth
 let _perPage
+let _concurrentRequests
+let _excludedRoutes
+let _normalizer
 
 exports.sourceNodes = async (
-  { boundActionCreators, getNode, store, cache, createNodeId },
+  { actions, getNode, store, cache, createNodeId },
   {
     baseUrl,
     protocol,
@@ -28,15 +31,21 @@ exports.sourceNodes = async (
     verboseOutput,
     perPage = 100,
     searchAndReplaceContentUrls = {},
+    concurrentRequests = 10,
+    excludedRoutes = [],
+    normalizer,
   }
 ) => {
-  const { createNode } = boundActionCreators
+  const { createNode, touchNode } = actions
   _verbose = verboseOutput
   _siteURL = `${protocol}://${baseUrl}`
   _useACF = useACF
   _hostingWPCOM = hostingWPCOM
   _auth = auth
   _perPage = perPage
+  _concurrentRequests = concurrentRequests
+  _excludedRoutes = excludedRoutes
+  _normalizer = normalizer
 
   let entities = await fetch({
     baseUrl,
@@ -46,6 +55,8 @@ exports.sourceNodes = async (
     _hostingWPCOM,
     _auth,
     _perPage,
+    _concurrentRequests,
+    _excludedRoutes,
     typePrefix,
     refactoredEntityTypes,
   })
@@ -91,14 +102,45 @@ exports.sourceNodes = async (
     store,
     cache,
     createNode,
+    createNodeId,
+    touchNode,
     _auth,
   })
+
+  // Creates links between elements and parent element.
+  entities = normalize.mapElementsToParent(entities)
 
   // Search and replace Content Urls
   entities = normalize.searchReplaceContentUrls({
     entities,
     searchAndReplaceContentUrls,
   })
+
+  // apply custom normalizer
+  if (typeof _normalizer === `function`) {
+    entities = _normalizer({
+      entities,
+      store,
+      cache,
+      createNode,
+      createNodeId,
+      touchNode,
+      getNode,
+      typePrefix,
+      refactoredEntityTypes,
+      baseUrl,
+      protocol,
+      _siteURL,
+      hostingWPCOM,
+      useACF,
+      auth,
+      verboseOutput,
+      perPage,
+      searchAndReplaceContentUrls,
+      concurrentRequests,
+      excludedRoutes,
+    })
+  }
 
   // creates nodes for each entry
   normalize.createNodesFromEntities({ entities, createNode })

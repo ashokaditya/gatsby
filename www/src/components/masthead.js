@@ -1,11 +1,9 @@
-import Link from "gatsby-link"
+import React from "react"
 import ArrowForwardIcon from "react-icons/lib/md/arrow-forward"
 
-import { rhythm, scale, options } from "../utils/typography"
+import { rhythm, scale } from "../utils/typography"
 import presets, { colors } from "../utils/presets"
 import CtaButton from "./cta-button"
-import MastheadBg from "./masthead-bg"
-import FuturaParagraph from "./futura-paragraph"
 import { vP, vPHd, vPVHd, vPVVHd } from "../components/gutters"
 
 const MastheadContent = () => (
@@ -14,8 +12,7 @@ const MastheadContent = () => (
     css={{
       display: `flex`,
       padding: vP,
-      paddingTop: rhythm(4),
-      paddingBottom: rhythm(1),
+      paddingTop: rhythm(5),
       paddingBottom: rhythm(1),
       flexGrow: `0`,
       flexShrink: `1`,
@@ -26,7 +23,7 @@ const MastheadContent = () => (
         paddingRight: 0,
       },
       [presets.Tablet]: {
-        paddingTop: rhythm(4),
+        paddingTop: rhythm(5),
       },
       [presets.Desktop]: {
         paddingTop: rhythm(5),

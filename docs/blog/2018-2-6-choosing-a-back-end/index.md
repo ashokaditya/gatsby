@@ -2,6 +2,7 @@
 title: Picking a back-end for GatsbyJS
 date: "2018-02-06"
 author: "Ross Whitehouse"
+tags: ["headless-cms", "wordpress", "contentful", "netlify-cms", "jamstack"]
 ---
 
 A little while ago I had the six-monthly itch to redo my portfolio site, and I decided I was going to learn to use Gatsby. But that seems to be only half the battle. After you’ve built your front-end, how do you decide on the back-end? There’s so many out there!
@@ -36,10 +37,10 @@ Now we need a system to manage and deliver our content in a nice API (instructed
 
 Firstly, though, why do we want a Headless CMS and a JAMstack for the project? There are a few reasons most people use them, and some that are down to personal preference:
 
-1. **Easy setup!**
-2. **No back-end code.** I’m a front-end dev and honestly don’t want to spend hours setting up some PHP that I won’t enjoy. Gimme the good stuff.
-3. **No server needed.** Cloud CMSs mean that I don’t need to pay the hosting people to setup an SQL database.
-4. **Easy to edit.** If I need to edit a site on the fly or have a client who needs to do the same, they don’t need to touch any code or run to their home workstation to fix a spelling error. They can access it anywhere.
+1.  **Easy setup!**
+2.  **No back-end code.** I’m a front-end dev and honestly don’t want to spend hours setting up some PHP that I won’t enjoy. Gimme the good stuff.
+3.  **No server needed.** Cloud CMSs mean that I don’t need to pay the hosting people to setup an SQL database.
+4.  **Easy to edit.** If I need to edit a site on the fly or have a client who needs to do the same, they don’t need to touch any code or run to their home workstation to fix a spelling error. They can access it anywhere.
 
 ---
 
@@ -117,9 +118,9 @@ Prismic has a similar pricing structure to Contentful - but has a few more optio
 
 Cockpit also seems to share a lot of the same features except for two big differences:
 
-* It’s open source - anyone can download it, anyone can contribute to the git repository and improve it, meaning it’s fully free and will be available - in one form or another - forever. I could see an issue with Contentful if the service ever stopped working. They have backups on AWS and create nightly backups on their premium plans, but the actual interface may become unavailable. Because Cockpit is open source they could go out of business or go offline for a night or just stop working altogether, and there’s a repo available with your CMS on.
+- It’s open source - anyone can download it, anyone can contribute to the git repository and improve it, meaning it’s fully free and will be available - in one form or another - forever. I could see an issue with Contentful if the service ever stopped working. They have backups on AWS and create nightly backups on their premium plans, but the actual interface may become unavailable. Because Cockpit is open source they could go out of business or go offline for a night or just stop working altogether, and there’s a repo available with your CMS on.
 
-* It’s self-hosted - this ties into the last point and if it did all come crashing down, as long as your site is still active so will your CMS be. Great news for the tech-paranoid!
+- It’s self-hosted - this ties into the last point and if it did all come crashing down, as long as your site is still active so will your CMS be. Great news for the tech-paranoid!
 
 ---
 

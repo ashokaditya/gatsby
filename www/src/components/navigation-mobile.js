@@ -1,12 +1,12 @@
 import React from "react"
-import Link from "gatsby-link"
+import { Link } from "gatsby"
 
 import {
   BlogIcon,
-  CommunityIcon,
   DocsIcon,
   TutorialIcon,
   PluginsIcon,
+  ShowcaseIcon,
 } from "../assets/mobile-nav-icons"
 import presets, { colors } from "../utils/presets"
 import typography, { rhythm, scale, options } from "../utils/typography"
@@ -26,7 +26,11 @@ const MobileNavItem = ({ linkTo, label, icon }) => (
       textAlign: `center`,
     }}
   >
-    <img src={icon} css={{ height: 32, display: `block`, margin: `0 auto` }} />
+    <img
+      src={icon}
+      css={{ height: 32, display: `block`, margin: `0 auto` }}
+      alt={`${label} Icon`}
+    />
     <div>{label}</div>
   </Link>
 )
@@ -45,6 +49,7 @@ const MobileNavigation = () => (
       borderTop: `1px solid ${colors.ui.light}`,
       background: colors.ui.whisper,
       fontFamily: typography.options.headerFontFamily.join(`,`),
+      paddingBottom: `env(safe-area-inset-bottom)`,
       [presets.Tablet]: {
         display: `none`,
       },
@@ -52,8 +57,9 @@ const MobileNavigation = () => (
   >
     <MobileNavItem linkTo="/docs/" label="Docs" icon={DocsIcon} />
     <MobileNavItem linkTo="/tutorial/" label="Tutorial" icon={TutorialIcon} />
-    <MobileNavItem linkTo="/packages/" label="Plugins" icon={PluginsIcon} />
+    <MobileNavItem linkTo="/plugins/" label="Plugins" icon={PluginsIcon} />
     <MobileNavItem linkTo="/blog/" label="Blog" icon={BlogIcon} />
+    <MobileNavItem linkTo="/showcase/" label="Showcase" icon={ShowcaseIcon} />
   </div>
 )
 

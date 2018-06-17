@@ -5,6 +5,7 @@ const parseFilepath = require(`parse-filepath`)
 const fs = require(`fs-extra`)
 const slash = require(`slash`)
 const slugify = require(`limax`)
+const url = require(`url`)
 
 const localPackages = `../packages`
 const localPackagesArr = []
@@ -18,8 +19,8 @@ const slugToAnchor = slug =>
     .filter(item => item !== ``) // remove empty values
     .pop() // take last item
 
-exports.createPages = ({ graphql, boundActionCreators }) => {
-  const { createPage, createRedirect } = boundActionCreators
+exports.createPages = ({ graphql, actions }) => {
+  const { createPage, createRedirect } = actions
 
   // Random redirects
   createRedirect({
@@ -34,9 +35,16 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
     isPermanent: true,
   })
 
+  createRedirect({
+    fromPath: `/packages/`, // Moved "Plugins" page from /packages to /plugins
+    toPath: `/plugins/`,
+    isPermanent: true,
+  })
+
   return new Promise((resolve, reject) => {
     const docsTemplate = path.resolve(`src/templates/template-docs-markdown.js`)
     const blogPostTemplate = path.resolve(`src/templates/template-blog-post.js`)
+    const tagTemplate = path.resolve(`src/templates/tags.js`)
     const contributorPageTemplate = path.resolve(
       `src/templates/template-contributor-page.js`
     )
@@ -46,6 +54,24 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
     const remotePackageTemplate = path.resolve(
       `src/templates/template-docs-remote-packages.js`
     )
+    const showcaseTemplate = path.resolve(
+      `src/templates/template-showcase-details.js`
+    )
+
+    createRedirect({
+      fromPath: `/docs/bound-action-creators/`,
+      isPermanent: true,
+      redirectInBrowser: true,
+      toPath: `/docs/actions/`,
+    })
+
+    createRedirect({
+      fromPath: `/docs/bound-action-creators`,
+      isPermanent: true,
+      redirectInBrowser: true,
+      toPath: `/docs/actions`,
+    })
+
     // Query for markdown nodes to use in creating pages.
     resolve(
       graphql(
@@ -54,6 +80,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
             allMarkdownRemark(
               sort: { order: DESC, fields: [frontmatter___date] }
               limit: 1000
+              filter: { fileAbsolutePath: { ne: null } }
             ) {
               edges {
                 node {
@@ -66,11 +93,21 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
                     draft
                     canonicalLink
                     publishedAt
+                    tags
                   }
                 }
               }
             }
             allAuthorYaml {
+              edges {
+                node {
+                  fields {
+                    slug
+                  }
+                }
+              }
+            }
+            allSitesYaml {
               edges {
                 node {
                   fields {
@@ -117,9 +154,9 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
 
         // Create blog pages.
         blogPosts.forEach((edge, index) => {
-          const next = index === 0 ? false : blogPosts[index - 1].node
+          const next = index === 0 ? null : blogPosts[index - 1].node
           const prev =
-            index === blogPosts.length - 1 ? false : blogPosts[index + 1].node
+            index === blogPosts.length - 1 ? null : blogPosts[index + 1].node
 
           createPage({
             path: `${edge.node.fields.slug}`, // required
@@ -132,11 +169,37 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
           })
         })
 
+        const tagLists = blogPosts
+          .filter(post => _.get(post, `node.frontmatter.tags`))
+          .map(post => _.get(post, `node.frontmatter.tags`))
+
+        _.uniq(_.flatten(tagLists)).forEach(tag => {
+          createPage({
+            path: `/blog/tags/${_.kebabCase(tag)}/`,
+            component: tagTemplate,
+            context: {
+              tag,
+            },
+          })
+        })
+
         // Create contributor pages.
         result.data.allAuthorYaml.edges.forEach(edge => {
           createPage({
             path: `${edge.node.fields.slug}`,
             component: slash(contributorPageTemplate),
+            context: {
+              slug: edge.node.fields.slug,
+            },
+          })
+        })
+
+        result.data.allSitesYaml.edges.forEach(edge => {
+          if (!edge.node.fields) return
+          if (!edge.node.fields.slug) return
+          createPage({
+            path: `${edge.node.fields.slug}`,
+            component: slash(showcaseTemplate),
             context: {
               slug: edge.node.fields.slug,
             },
@@ -192,8 +255,8 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
 }
 
 // Create slugs for files.
-exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
-  const { createNodeField } = boundActionCreators
+exports.onCreateNode = ({ node, actions, getNode }) => {
+  const { createNodeField } = actions
   let slug
   if (node.internal.type === `File`) {
     const parsedFilePath = parseFilepath(node.relativePath)
@@ -244,6 +307,11 @@ exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
     }
   } else if (node.internal.type === `AuthorYaml`) {
     slug = `/contributors/${slugify(node.id)}/`
+    createNodeField({ node, name: `slug`, value: slug })
+  } else if (node.internal.type === `SitesYaml` && node.main_url) {
+    const parsed = url.parse(node.main_url)
+    const cleaned = parsed.hostname + parsed.pathname
+    slug = `/showcase/${slugify(cleaned)}`
     createNodeField({ node, name: `slug`, value: slug })
   }
 }

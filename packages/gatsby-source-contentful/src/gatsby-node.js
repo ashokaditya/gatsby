@@ -1,3 +1,5 @@
+const path = require(`path`)
+
 const _ = require(`lodash`)
 const fs = require(`fs-extra`)
 
@@ -30,27 +32,24 @@ exports.setFieldsOnGraphQLNodeType = require(`./extend-node-type`).extendNodeTyp
  */
 
 exports.sourceNodes = async (
-  { boundActionCreators, getNodes, hasNodeChanged, store },
-  { spaceId, accessToken, host }
+  { actions, getNode, getNodes, createNodeId, hasNodeChanged, store },
+  { spaceId, accessToken, host, environment }
 ) => {
-  const {
-    createNode,
-    deleteNode,
-    getNode,
-    touchNode,
-    setPluginStatus,
-  } = boundActionCreators
+  const { createNode, deleteNode, touchNode, setPluginStatus } = actions
 
   host = host || `cdn.contentful.com`
+  environment = environment || `master` // default is always master
   // Get sync token if it exists.
   let syncToken
   if (
     store.getState().status.plugins &&
     store.getState().status.plugins[`gatsby-source-contentful`] &&
-    store.getState().status.plugins[`gatsby-source-contentful`][spaceId]
+    store.getState().status.plugins[`gatsby-source-contentful`][
+      `${spaceId}-${environment}`
+    ]
   ) {
     syncToken = store.getState().status.plugins[`gatsby-source-contentful`][
-      spaceId
+      `${spaceId}-${environment}`
     ]
   }
 
@@ -63,6 +62,7 @@ exports.sourceNodes = async (
     syncToken,
     spaceId,
     accessToken,
+    environment,
     host,
   })
 
@@ -74,17 +74,31 @@ exports.sourceNodes = async (
   // Remove deleted entries & assets.
   // TODO figure out if entries referencing now deleted entries/assets
   // are "updated" so will get the now deleted reference removed.
-  currentSyncData.deletedEntries
-    .map(e => e.sys.id)
-    .forEach(id => deleteNode(id, getNode(id)))
-  currentSyncData.deletedAssets
-    .map(e => e.sys.id)
-    .forEach(id => deleteNode(id, getNode(id)))
+
+  function deleteContentfulNode(node) {
+    const localizedNodes = locales
+      .map(locale => {
+        const nodeId = createNodeId(
+          normalize.makeId({
+            id: node.sys.id,
+            currentLocale: locale.code,
+            defaultLocale,
+          })
+        )
+        return getNode(nodeId)
+      })
+      .filter(node => node)
+
+    localizedNodes.forEach(node => deleteNode({ node }))
+  }
+
+  currentSyncData.deletedEntries.forEach(deleteContentfulNode)
+  currentSyncData.deletedAssets.forEach(deleteContentfulNode)
 
   const existingNodes = getNodes().filter(
     n => n.internal.owner === `gatsby-source-contentful`
   )
-  existingNodes.forEach(n => touchNode(n.id))
+  existingNodes.forEach(n => touchNode({ nodeId: n.id }))
 
   const assets = currentSyncData.assets
 
@@ -102,7 +116,7 @@ exports.sourceNodes = async (
   // This might change though
   if (host !== `preview.contentful.com`) {
     const newState = {}
-    newState[spaceId] = nextSyncToken
+    newState[`${spaceId}-${environment}`] = nextSyncToken
     setPluginStatus(newState)
   }
 
@@ -161,6 +175,7 @@ exports.sourceNodes = async (
       conflictFieldPrefix,
       entries: entryList[i],
       createNode,
+      createNodeId,
       resolvable,
       foreignReferenceMap,
       defaultLocale,
@@ -172,6 +187,7 @@ exports.sourceNodes = async (
     normalize.createAssetNodes({
       assetItem,
       createNode,
+      createNodeId,
       defaultLocale,
       locales,
     })
@@ -180,14 +196,18 @@ exports.sourceNodes = async (
   return
 }
 
+exports.onPreBootstrap = async ({ store }) => {
+  const program = store.getState().program
+  const CACHE_DIR = path.resolve(
+    `${program.directory}/.cache/contentful/assets/`
+  )
+  await fs.ensureDir(CACHE_DIR)
+}
+
 // Check if there are any ContentfulAsset nodes and if gatsby-image is installed. If so,
 // add fragments for ContentfulAsset and gatsby-image. The fragment will cause an error
 // if there's not ContentfulAsset nodes and without gatsby-image, the fragment is useless.
-exports.onPreExtractQueries = async ({
-  store,
-  getNodes,
-  boundActionCreators,
-}) => {
+exports.onPreExtractQueries = async ({ store, getNodes }) => {
   const program = store.getState().program
 
   const nodes = getNodes()

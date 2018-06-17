@@ -8,14 +8,18 @@ Parses JavaScript files to extract frontmatter from exports.
 
 ## How to use
 
+To use this plugin you also need [gatsby-source-filesystem](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-source-filesystem) installed.
+
 ```javascript
 // In your gatsby-config.js
-plugins: [`gatsby-transformer-javascript-frontmatter`];
+module.exports = {
+  plugins: [`gatsby-transformer-javascript-frontmatter`],
+}
 ```
 
 ## Parsing algorithm
 
-This plugin uses babylon and traverse (from the babel family of code) to
+This plugin uses @babel/parser and traverse (from the babel family of code) to
 statically read the frontmatter exports.
 
 In a .js file, export a frontmatter object to set your metadata variables, like so:
@@ -45,7 +49,7 @@ export const frontmatter = {
   path: "choropleth-on-d3v4",
   category: "data science",
   description: "Things about the choropleth.",
-};
+}
 ```
 
 ## How to query
